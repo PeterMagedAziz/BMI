@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:bmi/modules/bmi_result/bmi-result.dart';
 import 'package:flutter/material.dart';
 
 class BMIscreen extends StatefulWidget {
@@ -9,6 +12,9 @@ class BMIscreen extends StatefulWidget {
 
 class _BMIscreenState extends State<BMIscreen> {
   bool isMale = true;
+  double height = 120.0;
+  int age = 0;
+  int weight = 10;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +30,9 @@ class _BMIscreenState extends State<BMIscreen> {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
-                          isMale= true;
+                          isMale = true;
                         });
                       },
                       child: Container(
@@ -57,7 +63,7 @@ class _BMIscreenState extends State<BMIscreen> {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           isMale = false;
                         });
@@ -103,22 +109,22 @@ class _BMIscreenState extends State<BMIscreen> {
                       const Text(
                         'Height',
                         style: TextStyle(
-                            fontSize: 25.0, fontWeight: FontWeight.bold),
+                            fontSize: 35.0, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
-                        children: const [
+                        children: [
                           Text(
-                            '180',
-                            style: TextStyle(
+                            '${height.round()}',
+                            style: const TextStyle(
                                 fontSize: 40.0, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5.0,
                           ),
-                          Text(
+                          const Text(
                             'CM',
                             style: TextStyle(
                                 fontSize: 15.0, fontWeight: FontWeight.bold),
@@ -126,10 +132,13 @@ class _BMIscreenState extends State<BMIscreen> {
                         ],
                       ),
                       Slider(
-                          value: 120.0,
+                          value: height,
                           max: 220.0,
                           min: 80.0,
                           onChanged: (value) {
+                            setState(() {
+                              height = value;
+                            });
                             print(value.round());
                           }),
                     ],
@@ -156,22 +165,32 @@ class _BMIscreenState extends State<BMIscreen> {
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
-                          const Text(
-                            '180',
-                            style: TextStyle(
+                          Text(
+                            '$age',
+                            style: const TextStyle(
                                 fontSize: 40.0, fontWeight: FontWeight.bold),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                },
                                 mini: true,
+                                heroTag: 'age--',
                                 child: const Icon(Icons.remove),
                               ),
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                },
                                 mini: true,
+                                heroTag: 'age++',
                                 child: const Icon(Icons.add),
                               ),
                             ],
@@ -190,25 +209,35 @@ class _BMIscreenState extends State<BMIscreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            'Age',
+                            'Weight',
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
-                          const Text(
-                            '180',
-                            style: TextStyle(
+                          Text(
+                            '$weight',
+                            style: const TextStyle(
                                 fontSize: 40.0, fontWeight: FontWeight.bold),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
                                 mini: true,
+                                heroTag: 'weight--',
                                 child: const Icon(Icons.remove),
                               ),
                               FloatingActionButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
+                                heroTag: 'weight++',
                                 mini: true,
                                 child: const Icon(Icons.add),
                               ),
@@ -227,7 +256,17 @@ class _BMIscreenState extends State<BMIscreen> {
             height: 50.0,
             width: double.infinity,
             child: MaterialButton(
-              onPressed: () {},
+              onPressed: () {
+                double result = weight / pow(height / 100, 2);
+                print(result.round());
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BmiResult(age: age, isMale: isMale, result: result.round(), ),
+                  ),
+                );
+              },
               child: const Text(
                 'CALCULATE',
                 style: TextStyle(
