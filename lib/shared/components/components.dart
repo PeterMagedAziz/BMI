@@ -32,13 +32,15 @@ Widget defaultFormField({
   bool isPassword = false,
   required String label,
   required IconData prefix,
+  VoidCallback? onTap,
   IconData? suffix,
-  required VoidCallback suffixPressed,
+  VoidCallback? suffixPressed,
 }) =>
     TextFormField(
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,
+      onTap: onTap,
       onFieldSubmitted: (String value) {
         print(value);
       },
