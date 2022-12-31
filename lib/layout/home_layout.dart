@@ -225,29 +225,43 @@ class _HomeLayoutState extends State<HomeLayout> {
       },
     );
   }
-
   Future insertToDatabase(
-      {
-        required String title,
+      {required String title,
         required String time,
-        required String date
-      }
-      )  async {
-     return await database.transaction((txn) {
-      txn
+        required String date}) async {
+    return await database.transaction((txn) {
+      return txn
           .rawInsert(
-              'INSERT INTO tasks (title , date , time , status) VALUES ("$title", "$date", "$time", "new")')
+          'INSERT INTO tasks (title , date , time , status) VALUES ("$title", "$date", "$time", "new")')
           .then((value) {
         print('$value inserted successfully');
       }).catchError((error) {
         print('Error When Inserting  new Records ${error.toString()}');
       });
-      //throw Exception('Result unexpectedly null');
-      // print(null!);
-      // ignore: null_check_always_fails
-       return insertToDatabase(title: title, time: time, date: date);
     });
   }
+  // Future insertToDatabase(
+  //     {
+  //       required String title,
+  //       required String time,
+  //       required String date
+  //     }
+  //     )  async {
+  //    return await database.transaction((txn) {
+  //     txn
+  //         .rawInsert(
+  //             'INSERT INTO tasks (title , date , time , status) VALUES ("$title", "$date", "$time", "new")')
+  //         .then((value) {
+  //       print('$value inserted successfully');
+  //     }).catchError((error) {
+  //       print('Error When Inserting  new Records ${error.toString()}');
+  //     });
+  //     //throw Exception('Result unexpectedly null');
+  //     // print(null!);
+  //     // ignore: null_check_always_fails
+  //      return insertToDatabase(title: title, time: time, date: date);
+  //   });
+  // }
   Future<List<Map>> getDataFromDatabase (database)   async {
     return await database.query('tasks');
   }
