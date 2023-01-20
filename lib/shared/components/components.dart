@@ -1,3 +1,4 @@
+
 import 'package:bmi/shared/cubit/cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ Widget defaultButton({
         ),
       ),
     );
+
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType type,
@@ -71,6 +73,7 @@ Widget defaultFormField({
         border: const OutlineInputBorder(),
       ),
     );
+
 Widget buildTaskItem(Map model, context) => Dismissible(
       key: Key(model['id'].toString()),
       child: Padding(
@@ -137,16 +140,12 @@ Widget tasksBuilder({
     ConditionalBuilder(
         condition: tasks.isNotEmpty,
         builder: (context) => ListView.separated(
-            itemBuilder: (context, index) {
-             return buildTaskItem(tasks[index], context);
-            },
-            separatorBuilder: (context, index) => Container(
-                  width: double.infinity,
-                  height: 1.0,
-                  color: Colors.grey[300],
-                ),
-            itemCount: tasks.length,
-        ),
+              itemBuilder: (context, index) {
+                return buildTaskItem(tasks[index], context);
+              },
+              separatorBuilder: (context, index) => myDivider(),
+              itemCount: tasks.length,
+            ),
         fallback: (context) => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -159,15 +158,163 @@ Widget tasksBuilder({
                   ),
                   Text(
                     'No Tasks Yet, Please Add Some Tasks',
-                    style:
-                        TextStyle
-                          (
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey
-                        ),
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
                   )
                 ],
               ),
             ));
+
+Widget myDivider() => Padding(
+  padding: const EdgeInsets.all(20.0),
+  child:   Container(
+
+        width: double.infinity,
+
+        height: 1.0,
+
+        color: Colors.grey[300],
+
+      ),
+);
+Widget buildArticleItems(business,context) => Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image:  DecorationImage(
+                  image: NetworkImage(
+                      '${business['urlToImage']}'),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 120.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:  [
+                  Expanded(
+                    child: Text(
+                      '${business['title']}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    '${business['publishedAt']}',
+                    style: const TextStyle(color: Colors.grey, fontSize: 15.0),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+Widget buildScienceItems(sciences) => Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image:  DecorationImage(
+                  image: NetworkImage(
+                      '${sciences['urlToImage']}'),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 120.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:  [
+                  Expanded(
+                    child: Text(
+                      '${sciences['title']}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 20.0),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    '${sciences['publishedAt']}',
+                    style: const TextStyle(color: Colors.grey, fontSize: 15.0),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+Widget buildSportsItems(sports) => Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image:  DecorationImage(
+                  image: NetworkImage(
+                      '${sports['urlToImage']}'),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 120.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:  [
+                  Expanded(
+                    child: Text(
+                      '${sports['title']}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 20.0),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    '${sports['publishedAt']}',
+                    style: const TextStyle(color: Colors.grey, fontSize: 15.0),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+
 

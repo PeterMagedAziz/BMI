@@ -18,7 +18,7 @@ class BmiResult extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Image.asset('images/info.jpg',width: 300.0,height: 300.0,),
+          Image.asset('assets/images/info.jpg',width: 300.0,height: 300.0,),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

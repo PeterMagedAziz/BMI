@@ -39,6 +39,9 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
+  dio: ^4.0.6
+  hexcolor: ^3.0.1
+  shared_preferences: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +65,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - images/
+    - assets/images/
 
 
   # To add assets to your application, add an assets section, like this:

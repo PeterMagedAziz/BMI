@@ -2,9 +2,12 @@ import 'package:bmi/modules/todo_app/archived_tasks/archived_tasks_screen.dart';
 import 'package:bmi/modules/todo_app/done_tasks/done_tasks_screen.dart';
 import 'package:bmi/modules/todo_app/new_tasks/new_tasks_screen.dart';
 import 'package:bmi/shared/cubit/states.dart';
+import 'package:bmi/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../../layout/news_app/cubit/states.dart';
 
 
 class AppCubit extends Cubit<AppStates> {
@@ -165,6 +168,17 @@ class AppCubit extends Cubit<AppStates> {
     isBottonSheetShown = isShow;
     fabIcon = icon;
     emit(AppChangeBottomSheetState());
+  }
+  bool isDark = false;
+
+  void changeAppMode()
+  {
+
+    {
+      isDark = !isDark;
+        emit(NewsChangeAppModeStates());
+    }
+
   }
 
 }

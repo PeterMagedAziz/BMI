@@ -19,3 +19,5 @@ class AppGetDataDatabaseLoadingState extends AppStates{}
 
 class AppChangeBottomSheetState extends AppStates{}
 
+class NewsChangeAppModeStates extends AppStates{}
+
