@@ -1,7 +1,7 @@
-
 import 'package:bmi/shared/cubit/cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -39,6 +39,7 @@ Widget defaultFormField({
   VoidCallback? onTap,
   IconData? suffix,
   VoidCallback? suffixPressed,
+  final void Function(String)? onChange,
 }) =>
     TextFormField(
       controller: controller,
@@ -48,9 +49,7 @@ Widget defaultFormField({
       onFieldSubmitted: (String value) {
         print(value);
       },
-      onChanged: (String value) {
-        print(value);
-      },
+      onChanged: onChange,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Email must not be Empty ';
@@ -179,51 +178,115 @@ Widget myDivider() => Padding(
 
       ),
 );
-Widget buildArticleItems(business,context) => Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        children: [
-          Container(
-            width: 120.0,
-            height: 120.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              image:  DecorationImage(
-                  image: NetworkImage(
-                      '${business['urlToImage']}'),
-                  fit: BoxFit.cover),
-            ),
-          ),
-          const SizedBox(
-            width: 20.0,
-          ),
-          Expanded(
-            child: SizedBox(
+Widget buildArticleItems(articles,context) => InkWell(
+  onTap: (){
+    navigateTo(context, WebViewController()
+      ..loadRequest(
+        Uri.parse('${articles['url']}'),
+      ));
+  },
+  child:   Padding(
+
+        padding: const EdgeInsets.all(20.0),
+
+        child: Row(
+
+          children: [
+
+            Container(
+
+              width: 120.0,
+
               height: 120.0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:  [
-                  Expanded(
-                    child: Text(
-                      '${business['title']}',
-                      style: Theme.of(context).textTheme.bodyText1,
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Text(
-                    '${business['publishedAt']}',
-                    style: const TextStyle(color: Colors.grey, fontSize: 15.0),
-                  ),
-                ],
+
+              decoration: BoxDecoration(
+
+                borderRadius: BorderRadius.circular(10.0),
+
+                image:  DecorationImage(
+
+                    image: NetworkImage(
+
+                        '${articles['urlToImage']}'),
+
+                    fit: BoxFit.cover),
+
               ),
+
             ),
-          )
-        ],
+
+            const SizedBox(
+
+              width: 20.0,
+
+            ),
+
+            Expanded(
+
+              child: SizedBox(
+
+                height: 120.0,
+
+                child: Column(
+
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  mainAxisSize: MainAxisSize.min,
+
+                  mainAxisAlignment: MainAxisAlignment.start,
+
+                  children:  [
+
+                    Expanded(
+
+                      child: Text(
+
+                        '${articles['title']}',
+
+                        style: Theme.of(context).textTheme.bodyText1,
+
+                        maxLines: 3,
+
+                        overflow: TextOverflow.ellipsis,
+
+                      ),
+
+                    ),
+
+                    Text(
+
+                      '${articles['publishedAt']}',
+
+                      style: const TextStyle(color: Colors.grey, fontSize: 15.0),
+
+                    ),
+
+                  ],
+
+                ),
+
+              ),
+
+            )
+
+          ],
+
+        ),
+
       ),
-    );
+);
+
+Widget articleBuilder(list, context, {isSearch = false}) => ConditionalBuilder(
+  condition: list.length > 0,
+  builder: (context) => ListView.separated(
+    physics: BouncingScrollPhysics(),
+    itemBuilder: (context, index) => buildArticleItems(list[index], context),
+    separatorBuilder: (context, index) => myDivider(),
+    itemCount: 10,
+  ),
+  fallback: (context) =>
+  isSearch ? Container() : Center(child: CircularProgressIndicator()),
+);
 Widget buildScienceItems(sciences) => Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
@@ -255,7 +318,7 @@ Widget buildScienceItems(sciences) => Padding(
                       '${sciences['title']}',
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 20.0),
-                      maxLines: 4,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -301,7 +364,7 @@ Widget buildSportsItems(sports) => Padding(
                       '${sports['title']}',
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 20.0),
-                      maxLines: 4,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -316,5 +379,11 @@ Widget buildSportsItems(sports) => Padding(
         ],
       ),
     );
+void navigateTo (context,widget) => Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => widget
+  ),
+);
 
 

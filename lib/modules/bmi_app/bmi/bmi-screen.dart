@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:bmi/modules/bmi_result/bmi-result.dart';
+import 'package:bmi/modules/bmi_app/bmi_result/bmi-result.dart';
 import 'package:flutter/material.dart';
 
 class BMIscreen extends StatefulWidget {

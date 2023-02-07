@@ -1,7 +1,7 @@
 import 'package:bmi/layout/news_app/cubit/states.dart';
-import 'package:bmi/modules/business/business_screen.dart';
-import 'package:bmi/modules/science/science_screen.dart';
-import 'package:bmi/modules/sports/sports_screen.dart';
+import 'package:bmi/modules/news_app/business/business_screen.dart';
+import 'package:bmi/modules/news_app/science/science_screen.dart';
+import 'package:bmi/modules/news_app/sports/sports_screen.dart';
 import 'package:bmi/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +44,7 @@ class NewsCubit extends Cubit<NewsStates> {
     DioHelper.getData(
       url: 'v2/top-headlines',
       query: {
-        'country': 'us',
+        'country': 'eg',
         'category': 'business',
         'apiKey': "7ee21ac3112b43aaab160f2ef40c3af9",
       },
@@ -69,7 +69,7 @@ class NewsCubit extends Cubit<NewsStates> {
     DioHelper.getData(
       url: 'v2/top-headlines',
       query: {
-        'country': 'us',
+        'country': 'eg',
         'category': 'science',
         'apiKey': "7ee21ac3112b43aaab160f2ef40c3af9",
       },
@@ -92,7 +92,7 @@ class NewsCubit extends Cubit<NewsStates> {
     DioHelper.getData(
       url: 'v2/top-headlines',
       query: {
-        'country': 'us',
+        'country': 'eg',
         'category': 'sports',
         'apiKey': "7ee21ac3112b43aaab160f2ef40c3af9",
       },
@@ -109,5 +109,27 @@ class NewsCubit extends Cubit<NewsStates> {
     });
   }
 
+  List<dynamic>   search = [];
+  void getSearch(String value) {
+    search = [];
+    emit(NewsGetSearchLoadingStates());
+    DioHelper.getData(
+      url: 'v2/everything',
+      query: {
+        'q': '$value',
+        'apiKey': '65f7f556ec76449fa7dc7c0069f040ca',
+      },
+    ).then((value) {
+      {
+        // print(value.data['totalResults']);
+        search = value.data['articles'];
+        print(search[0]['title']);
+        emit(NewsGetSearchSuccessStates());
+      }
+    }).catchError((error) {
+      print(error.toString());
+      emit(NewsGetSearchErrorStates(error.toString()));
+    });
+  }
 }
 
