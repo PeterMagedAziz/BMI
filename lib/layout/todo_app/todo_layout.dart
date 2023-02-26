@@ -11,13 +11,13 @@ import 'package:intl/intl.dart';
 
 class HomeLayout extends StatelessWidget {
 
-   var scaffoldkey = GlobalKey<ScaffoldState>();
-  var formkey = GlobalKey<FormState>();
+   final scaffoldkey = GlobalKey<ScaffoldState>();
+   final formkey = GlobalKey<FormState>();
   bool isBottonSheetShown = false;
   IconData fabIcon = Icons.edit;
-  var titleController = TextEditingController();
-  var timeController = TextEditingController();
-  var dateController = TextEditingController();
+   final titleController = TextEditingController();
+   final timeController = TextEditingController();
+   final dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context)
@@ -83,11 +83,11 @@ class HomeLayout extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            defaultFormField(
+                            defaultTextFormField(
                               controller: titleController,
                               type: TextInputType.text,
-                              validate: (String value) {
-                                if (value.isEmpty) {
+                              validator: (value) {
+                                if (value!.isEmpty) {
                                   return 'Title must not be empty';
                                 }
                                 return null;
@@ -98,7 +98,7 @@ class HomeLayout extends StatelessWidget {
                             const SizedBox(
                               height: 15.0,
                             ),
-                            defaultFormField(
+                            defaultTextFormField(
                               controller: timeController,
                               type: TextInputType.datetime,
                               onTap: () {
@@ -111,8 +111,8 @@ class HomeLayout extends StatelessWidget {
                                   print(value.format(context));
                                 });
                               },
-                              validate: (String value) {
-                                if (value.isEmpty) {
+                              validator: (value) {
+                                if (value!.isEmpty) {
                                   return 'Time must not be empty';
                                 }
                                 return null;
@@ -123,7 +123,7 @@ class HomeLayout extends StatelessWidget {
                             const SizedBox(
                               height: 15.0,
                             ),
-                            defaultFormField(
+                            defaultTextFormField(
                               controller: dateController,
                               type: TextInputType.datetime,
                               onTap: () {
@@ -140,8 +140,8 @@ class HomeLayout extends StatelessWidget {
                                       .format(value as DateTime);
                                 });
                               },
-                              validate: (String value) {
-                                if (value.isEmpty) {
+                              validator: (value) {
+                                if (value != null) {
                                   return 'Date must not be empty';
                                 }
                                 return null;

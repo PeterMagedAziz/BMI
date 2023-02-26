@@ -39,11 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 40.0,
                   ),
-                  defaultFormField(
+                  defaultTextFormField(
                     controller: emailController,
                     type: TextInputType.emailAddress,
-                    validate: (String value) {
-                      if (value.isEmpty) {
+                    validator: (value ) {
+                      if (value != null) {
                         return 'Email must not be Empty';
                       }
                       return null;
@@ -55,11 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 15.0,
                   ),
-                  defaultFormField(
+                  defaultTextFormField(
                     controller: passwordController,
                     type: TextInputType.visiblePassword,
-                    validate: (String value) {
-                      if (value.isEmpty) {
+                    validator: (value) {
+                      if (value != null) {
                         return 'Password must not be Empty';
                       }
                       return null;

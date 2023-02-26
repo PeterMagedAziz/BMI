@@ -2,7 +2,6 @@ import 'package:bmi/modules/counter_app/counter/cubit/cubit.dart';
 import 'package:bmi/modules/counter_app/counter/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
 
 
 // state less contain one class provide widget
@@ -14,7 +13,8 @@ import 'package:bloc/bloc.dart';
 
 class CounterScreen extends StatelessWidget {
 
-  int counter = 1;
+
+  const CounterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class CounterScreen extends StatelessWidget {
                     TextButton(
                       onPressed: ()
                       {
-                        CounterCubit.get(context).Minus();
+                        CounterCubit.get(context).minus();
                       },
                       child: const Text(
                         'MINUS',
@@ -61,12 +61,13 @@ class CounterScreen extends StatelessWidget {
                     TextButton(
                       onPressed: ()
                       {
-                        CounterCubit.get(context).Plus();
+                        CounterCubit.get(context).plus();
                       },
                       child: const Text(
                         'PLUS',
                       ),
                     ),
+
                   ],
                 ),
               ),

@@ -1,13 +1,14 @@
 import 'package:bmi/shared/cubit/cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 Widget defaultButton({
   double width = double.infinity,
-  Color background = Colors.blue,
+  Color background = Colors.deepOrange,
   bool isUpperCase = true,
-  double radius = 0.0,
+  double radius = 3.0,
   required VoidCallback function,
   required String text,
 }) =>
@@ -29,17 +30,138 @@ Widget defaultButton({
       ),
     );
 
-Widget defaultFormField({
+Widget defaultTextButton({
+  required VoidCallback function,
+  required String text,
+}) => TextButton(
+    onPressed: function,
+    child:  Text(text.toUpperCase(),style: const TextStyle(fontSize: 15.0),),
+);
+
+// Widget defaultFormField({
+//   required TextEditingController controller,
+//   required TextInputType type,
+//   required Function(String) validate ,
+//   bool isPassword = false,
+//   required String label,
+//   required IconData prefix,
+//   VoidCallback? onTap,
+//   IconData? suffix,
+//   VoidCallback? suffixPressed,
+//   final void Function(String)? onChange,
+// }) =>
+//     TextFormField(
+//       controller: controller,
+//       keyboardType: type,
+//       obscureText: isPassword,
+//       onTap: onTap,
+//       onFieldSubmitted: (String value) {
+//         print(value);
+//       },
+//       onChanged: onChange,
+//       validator:
+//           (value) {
+//         if (value!.isEmpty) {
+//           return 'Email must not be Empty ';
+//         }
+//         return null;
+//       },
+//       decoration: InputDecoration(
+//         labelText: label,
+//         prefixIcon: Icon(
+//           prefix,
+//         ),
+//         suffixIcon: suffix != null
+//             ? IconButton(
+//                 onPressed: suffixPressed,
+//                 icon: Icon(
+//                   suffix,
+//                 ),
+//               )
+//             : null,
+//         border: const OutlineInputBorder(),
+//       ),
+//     );
+
+// Widget defaultFormField({
+//   required TextEditingController controller,
+//   required TextInputType type,
+//   final void Function(String)? onSubmit,
+//   final void Function(String)? onChange,
+//   VoidCallback? onTap,
+//   bool isPassword = false,
+//   required Function(String) validate ,
+//   required String label,
+//   required IconData prefix,
+//   IconData? suffix,
+//   VoidCallback? suffixPressed,
+//   bool isClickable = true,
+//   // required TextEditingController controller,
+// //   required TextInputType type,
+// //   final void Function(String)? onSubmit,
+// //   final void Function(String)? onChange,
+// //   VoidCallback? onTap,
+// //   bool isPassword = false,
+// //   required Function(String) validate ,
+// //   required String label,
+// //   required IconData prefix,
+// //   IconData? suffix,
+// //   VoidCallback? suffixPressed,
+// //   bool isClickable = true,
+//
+// }) =>
+//     TextFormField(
+//       controller: controller,
+//       keyboardType: type,
+//       obscureText: isPassword,
+//       enabled: isClickable,
+//       onFieldSubmitted: onSubmit,
+//       onChanged: onChange,
+//       onTap: onTap,
+//       validator:
+//           (value) {
+//         if (value!.isEmpty) {
+//           return 'This Form must not be Empty ';
+//         }
+//         return null;
+//       },
+//       decoration: InputDecoration(
+//         labelText: label,
+//         prefixIcon: Icon(
+//           prefix,
+//         ),
+//         suffixIcon: suffix != null
+//             ? IconButton(
+//           onPressed: suffixPressed,
+//           icon: Icon(
+//             suffix,
+//           ),
+//         )
+//             : null,
+//         border: const OutlineInputBorder(),
+//       ),
+//     );
+
+Widget defaultTextFormField({
   required TextEditingController controller,
-  required TextInputType type,
-  required Function validate,
-  bool isPassword = false,
   required String label,
+  TextInputType? keyboardType,
+  int? maxLength,
+  required String? Function(String?)? validator,
   required IconData prefix,
-  VoidCallback? onTap,
   IconData? suffix,
+  bool outlineInputBorderStatus = true,
+  required TextInputType type,
+  bool secureText = false,
+  String? hint,
   VoidCallback? suffixPressed,
+  dynamic initialValue,
+  dynamic onTap,
+  bool isClickable = true,
+  bool isPassword = false,
+  final void Function(String)? onSubmit,
   final void Function(String)? onChange,
+
 }) =>
     TextFormField(
       controller: controller,
@@ -50,12 +172,7 @@ Widget defaultFormField({
         print(value);
       },
       onChanged: onChange,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Email must not be Empty ';
-        }
-        return null;
-      },
+      validator: validator,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(
@@ -279,13 +396,13 @@ Widget buildArticleItems(articles,context) => InkWell(
 Widget articleBuilder(list, context, {isSearch = false}) => ConditionalBuilder(
   condition: list.length > 0,
   builder: (context) => ListView.separated(
-    physics: BouncingScrollPhysics(),
+    physics: const BouncingScrollPhysics(),
     itemBuilder: (context, index) => buildArticleItems(list[index], context),
     separatorBuilder: (context, index) => myDivider(),
     itemCount: 10,
   ),
   fallback: (context) =>
-  isSearch ? Container() : Center(child: CircularProgressIndicator()),
+  isSearch ? Container() : const Center(child: CircularProgressIndicator()),
 );
 Widget buildScienceItems(sciences) => Padding(
       padding: const EdgeInsets.all(20.0),
@@ -386,4 +503,53 @@ void navigateTo (context,widget) => Navigator.push(
   ),
 );
 
+void navigateAndFinish(context,widget) =>
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => widget
+        ),
+        (route) => false
+    );
 
+void showToast ({
+  required String text,
+  required ToastStates state,
+}) => Fluttertoast.showToast(
+    msg: text,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 5,
+    backgroundColor: chooseToastColor(state),
+    textColor: Colors.white,
+    fontSize: 16.0
+);
+enum ToastStates {success, error, warning}
+
+Color chooseToastColor(ToastStates state) {
+  Color color;
+  switch(state){
+    case ToastStates.success:
+      color = Colors.green;
+    break;
+    case ToastStates.error:
+      color= Colors.red;
+    break;
+    case ToastStates.warning:
+      color= Colors.amber;
+    break;
+  }
+  return color;
+}
+
+void showSnackBar({required String message,required BuildContext context,required Color color}){
+  var snackBar = SnackBar(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+    content: Text(message,textAlign: TextAlign.center,),
+    clipBehavior: Clip.hardEdge,
+    behavior: SnackBarBehavior.floating,
+    margin: const EdgeInsets.symmetric(horizontal: 70,vertical: 15),
+    padding: const EdgeInsets.all(10),
+    backgroundColor: color,
+    duration: const Duration(seconds: 1),);
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}

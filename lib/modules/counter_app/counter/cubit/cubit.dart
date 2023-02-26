@@ -5,11 +5,11 @@ class CounterCubit extends Cubit<CounterStates> {
   CounterCubit() : super(CounterInitialState());
   static CounterCubit get(context) => BlocProvider.of(context);
   int counter = 1;
-  void Minus (){
+  void minus (){
     counter--;
     emit(CounterMinusState(counter));
   }
-  void Plus (){
+  void plus (){
     counter++;
     emit(CounterPlusState(counter));
   }

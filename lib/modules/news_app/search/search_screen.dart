@@ -9,7 +9,7 @@ import '../../../layout/news_app/cubit/cubit.dart';
 
 
 class SearchScreen extends StatelessWidget {
-  var searchController = TextEditingController();
+  final searchController = TextEditingController();
 
   SearchScreen({super.key});
 
@@ -26,14 +26,14 @@ class SearchScreen extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: defaultFormField(
+                child: defaultTextFormField(
                   controller: searchController,
                   type: TextInputType.text,
                   onChange: (value) {
                     NewsCubit.get(context).getSearch(value);
                   },
-                  validate: (String value) {
-                    if (value.isEmpty) {
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'search must not be empty';
                     }
                     return null;
